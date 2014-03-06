@@ -22,10 +22,60 @@ CCScene* HelloWorld::scene()
 }
 
 //this->scheduleUpdate() calls HelloWorld::update(float FRAMERATE:dt) --- scale velocity by dt factor
-
+//How oftern is update run? every tick?
 void HelloWorld::update(float dx)
 {
-    _ball->setPosition(CCPoint(200, 500));
+    CCObject* brick;
+    CCARRAY_FOREACH(_bricks, brick){
+        if (! ((CCSprite *) brick)->isVisible() ){ //skip if the brick is already broken
+            continue;
+        }
+
+        //if mole->boundingBox().containsPoint(touchLocation)) {
+
+        if (_ball->boundingBox().intersectsRect(((CCSprite *)brick)->boundingBox())){
+            ((CCSprite *)brick)->setVisible(false);
+        }
+    }
+
+    _ball->setPosition(CCPoint(_ball->getPosition().x+1, _ball->getPosition().y+1)); //DEBUG MOVE BALL
+
+
+}
+
+void HelloWorld::ccTouchesBegan(CCSet* touches, CCEvent* event)
+{
+     
+    // Create a new touch object that holds the touch event.
+    CCTouch *touch = (CCTouch *)touches->anyObject();
+ 
+    //get the location of the touch event.
+    CCPoint location = touch->getLocationInView();
+ 
+    //Convert
+    CCPoint convertedLocation = CCDirector::sharedDirector()->convertToGL(location);
+
+    convertedLocation.y = 50;
+ 
+    // stop all current actions on the sprite.
+    _paddle->stopAllActions();
+ 
+    // run a new action which is to move the sprite to the new location with a 1 second delay.
+    _paddle->runAction(CCMoveTo::create(1.0, convertedLocation));
+
+}
+
+void HelloWorld::ccTouchesMoved(CCSet* touches, CCEvent* event)
+{
+    
+
+}
+
+
+// Method is called after the user is finished touching the screen or they have lifted their finger off the screen.
+void HelloWorld::ccTouchesEnded(CCSet* touches, CCEvent* event) {
+ 
+ 
 }
 
 // on "init" you need to initialize your instance
@@ -40,7 +90,10 @@ bool HelloWorld::init()
 
     /////////////////////////////
     // BCY3 code
-    
+
+    this->setTouchEnabled(true); //Enable touches on the scene!
+    _bricks = new CCArray();//Init array of _bricks
+
     CCSize winSize = CCDirector::sharedDirector()->getWinSize();
     
     //Sprites:
@@ -57,51 +110,52 @@ bool HelloWorld::init()
     _paddle->setPosition(ccp(winSize.width/2, 50));
     this->addChild(_paddle);
 
-    CCSprite *_brick;   
+    CCSprite *brick;   
     //Top Row
     for(int i = 0; i < 7; i++) {
 
-        _brick = CCSprite::create("brick_blue.png");
+        brick = CCSprite::create("brick_blue.png");
 
-        static int padding= (winSize.width-((_brick->getContentSize().width)*7))/8;
+        static int padding= (winSize.width-((brick->getContentSize().width)*7))/8;
 
-        int xOffset = padding+_brick->getContentSize().width/2+((_brick->getContentSize().width+padding)*i);
-        _brick->setPosition(ccp(xOffset, winSize.height-_brick->getContentSize().height * .25) );
-        this->addChild(_brick);
+        int xOffset = padding+brick->getContentSize().width/2+((brick->getContentSize().width+padding)*i);
+        brick->setPosition(ccp(xOffset, winSize.height - brick->getContentSize().height * .5) );
+        this->addChild(brick); //Add to screen
+        _bricks->addObject(brick); //Add to brick array
         
     }
 
     //Middle Row
     for(int i = 0; i < 5; i++) {
 
-        _brick = CCSprite::create("brick_orange.png");
+        brick = CCSprite::create("brick_orange.png");
 
-        static int padding= (winSize.width-((_brick->getContentSize().width)*5))/6;
+        static int padding= (winSize.width-((brick->getContentSize().width)*5))/6;
 
-        int xOffset = padding+_brick->getContentSize().width/2+((_brick->getContentSize().width+padding)*i);
-        _brick->setPosition(ccp(xOffset, winSize.height-_brick->getContentSize().height * .75) ); //set row in relation to top row
-        this->addChild(_brick);
+        int xOffset = padding+brick->getContentSize().width/2+((brick->getContentSize().width+padding)*i);
+        brick->setPosition(ccp(xOffset, winSize.height - brick->getContentSize().height * 1.5) ); //set row in relation to top row
+        this->addChild(brick); //Add to screen
+        _bricks->addObject(brick); //Add to brick array
         
     }
 
     //Bottom Row
     for(int i = 0; i < 6; i++) {
         
-        _brick = CCSprite::create("brick_purple.png");
+        brick = CCSprite::create("brick_purple.png");
 
-        static int padding= (winSize.width-((_brick->getContentSize().width)*6))/7;
+        static int padding= (winSize.width-((brick->getContentSize().width)*6))/7;
 
-        int xOffset = padding+_brick->getContentSize().width/2+((_brick->getContentSize().width+padding)*i);
-        _brick->setPosition(ccp(xOffset, winSize.height-_brick->getContentSize().height * 1.25)); //set row in relation to the top of the screen and the size of the bricks
-        this->addChild(_brick);
+        int xOffset = padding+brick->getContentSize().width/2+((brick->getContentSize().width+padding)*i);
+        brick->setPosition(ccp(xOffset, winSize.height - brick->getContentSize().height * 2.5)); //set row in relation to the top of the screen and the size of the _bricks
+        this->addChild(brick); //Add to screen
+        _bricks->addObject(brick); //Add to brick array
         
     }
 
-
-
-
     //CALL GAME LOGIC EVERY SECOND
     //this->schedule( schedule_selector(HelloWorld::gameLogic), 1.0 );
+
 
     this->scheduleUpdate();
 

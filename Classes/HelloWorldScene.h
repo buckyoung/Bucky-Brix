@@ -11,7 +11,16 @@ private:
 	cocos2d::CCSprite *_background;
 	cocos2d::CCSprite *_ball;
 	cocos2d::CCSprite *_paddle;
+	cocos2d::CCArray *_bricks;
+
+	cocos2d::CCPoint *_ball_top;
+	cocos2d::CCPoint *_ball_right;
+	cocos2d::CCPoint *_ball_bottom;
+	cocos2d::CCPoint *_ball_left;
 	void update(float dx);
+	virtual void ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event);
+	virtual void ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* event);
+	virtual void ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* event);
 
 
 	
