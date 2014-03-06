@@ -1,6 +1,22 @@
 #include "HelloWorldScene.h"
 #include "SimpleAudioEngine.h"
 
+
+
+
+
+//TODO: 1)Score and Sound     2)Other Scenes     then3)Particles 
+
+
+
+
+
+
+
+
+
+
+
 #define SPEED1 2
 #define SPEED2 4
 #define SPEED3 6
