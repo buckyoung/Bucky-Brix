@@ -105,9 +105,24 @@ void HelloWorld::update(float dx)
 
 }
 
+
+//TOUCHES:
 void HelloWorld::ccTouchesBegan(CCSet* touches, CCEvent* event)
 {
-     
+    // reset touch offset
+    _touchOffset = CCPointZero;
+
+    for( CCSetIterator it = touches->begin(); it != touches->end(); it++ ){
+        CCTouch* touch = dynamic_cast<CCTouch*>(*it);
+
+        if( touch )
+        {
+            // calculate offset from sprite to touch point
+            _touchOffset = ccpSub(_paddle->getPosition(), CCDirector::sharedDirector()->convertToGL(touch->getLocationInView()) );
+        }
+    }
+
+     /*BEFORE IMPLEMENTING SPRITE TOUCH X
     // Create a new touch object that holds the touch event.
     CCTouch *touch = (CCTouch *)touches->anyObject();
  
@@ -124,13 +139,20 @@ void HelloWorld::ccTouchesBegan(CCSet* touches, CCEvent* event)
  
     // run a new action which is to move the sprite to the new location with a 1 second delay.
     _paddle->runAction(CCMoveTo::create(1.0, convertedLocation));
-
+    */
 }
 
 void HelloWorld::ccTouchesMoved(CCSet* touches, CCEvent* event)
 {
 
+    for( CCSetIterator it = touches->begin(); it != touches->end(); it++) 
+    {
+        CCTouch* touch = dynamic_cast<CCTouch*>(*it);
 
+        // set the new sprite position
+        if( touch && _touchOffset.x && _touchOffset.y )
+            _paddle->setPosition( ccpAdd(CCDirector::sharedDirector()->convertToGL(touch->getLocationInView()), _touchOffset) ) ;
+    }
     
 
 }
@@ -138,7 +160,27 @@ void HelloWorld::ccTouchesMoved(CCSet* touches, CCEvent* event)
 
 // Method is called after the user is finished touching the screen or they have lifted their finger off the screen.
 void HelloWorld::ccTouchesEnded(CCSet* touches, CCEvent* event) {
- 
+    
+    for( CCSetIterator it = touches->begin(); it != touches->end(); it++) 
+    {
+        CCTouch* touch = dynamic_cast<CCTouch*>(*it);
+        if( touch && _touchOffset.x && _touchOffset.y  )
+        {
+            // set the new sprite position
+            _paddle->setPosition( ccpAdd(CCDirector::sharedDirector()->convertToGL(touch->getLocationInView() ), _touchOffset) );
+
+            // stop any existing actions are reset the scale
+            _paddle->stopAllActions();
+            //this->sprite->setScale(1.0f);
+
+            // animate letting go of the sprite
+            //this->sprite->runAction(CCSequence::create(
+              //  CCScaleBy::create(0.125f, 1.111f),
+                //CCScaleBy::create(0.125f, 0.9f),
+                //nullptr
+                //));
+        }
+    }
 }
 
 // on "init" you need to initialize your instance

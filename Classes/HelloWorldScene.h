@@ -20,6 +20,8 @@ private:
 	int _speeds[4];
 	int _angle_multiplier;
 
+	cocos2d::CCPoint _touchOffset;
+
 	void update(float dx);
 	virtual void ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event);
 	virtual void ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* event);
