@@ -154,7 +154,6 @@ bool HelloWorld::init()
     /////////////////////////////
     // BCY3 code
 
-
     this->setTouchEnabled(true); //Enable touches on the scene!
     _bricks = new CCArray();//Init array of _bricks
 
