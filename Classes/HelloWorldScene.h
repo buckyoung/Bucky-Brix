@@ -7,10 +7,20 @@ class HelloWorld : public cocos2d::CCLayer
 {
 
 private:
-	cocos2d::CCSprite * _paddle;
+
+	cocos2d::CCSprite *_background;
+	cocos2d::CCSprite *_ball;
+	cocos2d::CCSprite *_paddle;
+	void update(float dx);
+
+
+	
 
 
 public:
+
+	
+
     // Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
     virtual bool init();  
 
