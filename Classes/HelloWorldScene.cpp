@@ -1,10 +1,10 @@
 #include "HelloWorldScene.h"
 #include "SimpleAudioEngine.h"
 
-#define SPEED1 1
-#define SPEED2 3
-#define SPEED3 5
-#define SPEED4 7
+#define SPEED1 2
+#define SPEED2 4
+#define SPEED3 6
+#define SPEED4 8
 
 using namespace cocos2d;
 using namespace CocosDenshion;
@@ -38,7 +38,14 @@ void HelloWorld::update(float dx)
 
         if (_ball->boundingBox().intersectsRect(((CCSprite *)brick)->boundingBox())){ //COLLISION: ball/brick
             ((CCSprite *)brick)->setVisible(false);
-            _ball_y_direction = -1;
+            
+            if(_ball->boundingBox().getMaxX() < ((CCSprite *)brick)->boundingBox().getMinX()+SPEED4 ){ //Hit left side of brick
+                _ball_x_direction = -1;
+            } else if (_ball->boundingBox().getMinX() > ((CCSprite *)brick)->boundingBox().getMaxX()-SPEED4){ //hit right side of brick
+                _ball_x_direction = 1;
+            } else {
+                _ball_y_direction = -1;
+            }
 
             //see if we need to increase the speed
             if (_speed_index < ((CCSprite *)brick)->getTag()){
@@ -50,11 +57,21 @@ void HelloWorld::update(float dx)
 
     if (_ball->boundingBox().intersectsRect(_paddle->boundingBox() ) ){ //COLLISION: ball/paddle
 
-            if(_ball->boundingBox().getMinY() < _paddle->boundingBox().getMaxY()){ //Bounce off side of paddle
-                _ball_x_direction = - _ball_x_direction;
-            } else {
+            if(_ball->boundingBox().getMinY() < _paddle->boundingBox().getMaxY() - SPEED4*1.5 ){ //hit side of paddle -- give some lee-way
+                //do nothing
+            } else { //Hit top of paddle
                 _ball_speed = _speeds[_speed_index]; //update SPEED
                 _ball_y_direction = 1;
+
+                if((_ball->getPosition().x < _paddle->getPosition().x-_paddle->getContentSize().width/4) ) { //if it hits the left 1/4 of the paddle
+                    _angle_multiplier = 1.25;
+                    _ball_x_direction = -1;
+                } else if(_ball->getPosition().x > _paddle->getPosition().x+_paddle->getContentSize().width/4){
+                    _angle_multiplier = 1.25;
+                    _ball_x_direction = 1;
+                } else {
+                    _angle_multiplier = 1;
+                }
             }
     }
 
@@ -83,7 +100,7 @@ void HelloWorld::update(float dx)
         
     }
 
-    _ball->setPosition(CCPoint(_ball->getPosition().x + (_ball_speed*_ball_x_direction), _ball->getPosition().y + (_ball_speed*_ball_y_direction) ) ); //DEBUG MOVE BALL
+    _ball->setPosition(CCPoint(_ball->getPosition().x + (_ball_speed*_ball_x_direction * _angle_multiplier), _ball->getPosition().y + (_ball_speed*_ball_y_direction) ) ); //DEBUG MOVE BALL
 
 
 }
@@ -167,6 +184,7 @@ bool HelloWorld::init()
     _speeds[2] = SPEED3;
     _speeds[3] = SPEED4;
     _ball_speed = _speeds[_speed_index];
+    _angle_multiplier = 1;
 
     CCSprite *brick;
     //Top Row

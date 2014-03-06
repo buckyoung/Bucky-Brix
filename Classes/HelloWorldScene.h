@@ -18,6 +18,7 @@ private:
 	int _ball_speed;
 	int _speed_index;
 	int _speeds[4];
+	int _angle_multiplier;
 
 	void update(float dx);
 	virtual void ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event);
