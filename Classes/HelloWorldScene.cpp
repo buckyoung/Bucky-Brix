@@ -5,6 +5,7 @@
 #define SPEED2 4
 #define SPEED3 6
 #define SPEED4 8
+#define SETY 70.0
 
 using namespace cocos2d;
 using namespace CocosDenshion;
@@ -116,10 +117,15 @@ void HelloWorld::ccTouchesBegan(CCSet* touches, CCEvent* event)
         CCTouch* touch = dynamic_cast<CCTouch*>(*it);
         CCPoint convertedLocation = CCDirector::sharedDirector()->convertToGL(touch->getLocationInView());
 
+        convertedLocation.y = SETY;
+
         if( touch && ( ccpDistance(_paddle->getPosition(), convertedLocation ) < 100.0f) )
         {
             // calculate offset from sprite to touch point
-            _touchOffset = ccpSub(_paddle->getPosition(), CCDirector::sharedDirector()->convertToGL(touch->getLocationInView()) );
+            _touchOffset = ccpSub(_paddle->getPosition(), convertedLocation );
+           // _touchOffset.y = 0.0;
+
+            CCLog("_touchOffset: x: %f | y: %f", _touchOffset.x, _touchOffset.y);
         }
     }
 
@@ -150,10 +156,13 @@ void HelloWorld::ccTouchesMoved(CCSet* touches, CCEvent* event)
     {
         CCTouch* touch = dynamic_cast<CCTouch*>(*it);
         CCPoint convertedLocation = CCDirector::sharedDirector()->convertToGL(touch->getLocationInView());
+        convertedLocation.y = SETY;
+        //_touchOffset.y = 0.0;
+        CCLog("_touchOffset: x: %f | y: %f", _touchOffset.x, _touchOffset.y);
 
         // set the new sprite position
-        if( touch && _touchOffset.x && _touchOffset.y )
-            _paddle->setPosition( ccpAdd(CCDirector::sharedDirector()->convertToGL(touch->getLocationInView() ) , _touchOffset) ) ;
+        if( touch && _touchOffset.x ) //&& _touchOffset.y
+            _paddle->setPosition( ccpAdd( convertedLocation , _touchOffset) ) ;
     }
     
 
@@ -167,11 +176,13 @@ void HelloWorld::ccTouchesEnded(CCSet* touches, CCEvent* event) {
     {
         CCTouch* touch = dynamic_cast<CCTouch*>(*it);
         CCPoint convertedLocation = CCDirector::sharedDirector()->convertToGL(touch->getLocationInView());
+        convertedLocation.y = SETY;
+        //_touchOffset.y = 0.0;
 
-        if( touch && _touchOffset.x && _touchOffset.y  )
+        if( touch && _touchOffset.x) //&& _touchOffset.y  
         {
             // set the new sprite position
-            _paddle->setPosition( ccpAdd(CCDirector::sharedDirector()->convertToGL(touch->getLocationInView()) , _touchOffset) );
+            _paddle->setPosition( ccpAdd(convertedLocation , _touchOffset) );
 
             // stop any existing actions are reset the scale
             _paddle->stopAllActions();
@@ -216,7 +227,7 @@ bool HelloWorld::init()
     this->addChild(_ball);
 
     _paddle = CCSprite::create("paddle.png");
-    _paddle->setPosition(ccp(winSize.width/2, 50));
+    _paddle->setPosition(ccp(winSize.width/2, SETY));
     this->addChild(_paddle);
 
 
