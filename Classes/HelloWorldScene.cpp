@@ -5,7 +5,7 @@
 
 
 
-//TODO: 1)Score and Sound     2)Other Scenes     then3)Particles 
+//TODO: 1)Score     2)Other Scenes     then3)Particles 
 
 
 
@@ -55,6 +55,8 @@ void HelloWorld::update(float dx)
 
         if (_ball->boundingBox().intersectsRect(((CCSprite *)brick)->boundingBox())){ //COLLISION: ball/brick
             ((CCSprite *)brick)->setVisible(false);
+            CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("brick.wav"); 
+            //CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("break.wav"); 
             
             if(_ball->boundingBox().getMaxX() < ((CCSprite *)brick)->boundingBox().getMinX()+SPEED4 ){ //Hit left side of brick
                 _ball_x_direction = -1;
@@ -77,6 +79,9 @@ void HelloWorld::update(float dx)
             if(_ball->boundingBox().getMinY() < _paddle->boundingBox().getMaxY() - SPEED4*1.5 ){ //hit side of paddle -- give some lee-way
                 //do nothing
             } else { //Hit top of paddle
+
+                CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("paddle.wav"); 
+
                 _ball_speed = _speeds[_speed_index]; //update SPEED
                 _ball_y_direction = 1;
 
@@ -93,10 +98,15 @@ void HelloWorld::update(float dx)
     }
 
     if ( _savior->isVisible() && _ball->boundingBox().intersectsRect(_savior->boundingBox() ) ){ //COLLISION: ball/savior!
+        CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("savior.wav"); 
         _speed_index = 0; //RESET
         _ball_speed = _speeds[_speed_index]; //reset
         _ball_y_direction = 1;
         _savior->setVisible(false);
+
+        CCActionInterval* effect = CCBlink::create(1, 10);
+        _ball->runAction( effect );
+
     }
 
      CCSize winSize = CCDirector::sharedDirector()->getWinSize();
@@ -233,6 +243,9 @@ bool HelloWorld::init()
 
     /////////////////////////////
     // BCY3 code
+
+    //Init music
+   // CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic("background.wav", true); 
 
     this->setTouchEnabled(true); //Enable touches on the scene!
     _bricks = new CCArray();//Init array of _bricks
