@@ -65,10 +65,10 @@ void HelloWorld::update(float dx)
                 _ball_y_direction = 1;
 
                 if((_ball->getPosition().x < _paddle->getPosition().x-_paddle->getContentSize().width/4) ) { //if it hits the left 1/4 of the paddle
-                    _angle_multiplier = 1.25;
+                    _angle_multiplier = 1.5;
                     _ball_x_direction = -1;
                 } else if(_ball->getPosition().x > _paddle->getPosition().x+_paddle->getContentSize().width/4){
-                    _angle_multiplier = 1.25;
+                    _angle_multiplier = 1.5;
                     _ball_x_direction = 1;
                 } else {
                     _angle_multiplier = 1;
@@ -125,7 +125,7 @@ void HelloWorld::ccTouchesBegan(CCSet* touches, CCEvent* event)
             _touchOffset = ccpSub(_paddle->getPosition(), convertedLocation );
            // _touchOffset.y = 0.0;
 
-            CCLog("_touchOffset: x: %f | y: %f", _touchOffset.x, _touchOffset.y);
+            //CCLog("_touchOffset: x: %f | y: %f", _touchOffset.x, _touchOffset.y);
         }
     }
 
@@ -158,7 +158,7 @@ void HelloWorld::ccTouchesMoved(CCSet* touches, CCEvent* event)
         CCPoint convertedLocation = CCDirector::sharedDirector()->convertToGL(touch->getLocationInView());
         convertedLocation.y = SETY;
         //_touchOffset.y = 0.0;
-        CCLog("_touchOffset: x: %f | y: %f", _touchOffset.x, _touchOffset.y);
+        //CCLog("_touchOffset: x: %f | y: %f", _touchOffset.x, _touchOffset.y);
 
         // set the new sprite position
         if( touch && _touchOffset.x ) //&& _touchOffset.y
@@ -229,6 +229,10 @@ bool HelloWorld::init()
     _paddle = CCSprite::create("paddle.png");
     _paddle->setPosition(ccp(winSize.width/2, SETY));
     this->addChild(_paddle);
+
+    //_savior = CCSprite::create("savior.png");
+    //_savior->setPosition(CCPoint(winSize.width/2, 0.0));
+    //this->addChild(_savior);
 
 
     //init ball

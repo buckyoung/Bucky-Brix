@@ -11,6 +11,7 @@ private:
 	cocos2d::CCSprite *_background;
 	cocos2d::CCSprite *_ball;
 	cocos2d::CCSprite *_paddle;
+	//cocos2d::CCSprite *_savior;
 	cocos2d::CCArray *_bricks;
 
 	int _ball_x_direction; // + = right | - = left
