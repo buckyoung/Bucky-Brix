@@ -76,6 +76,13 @@ void HelloWorld::update(float dx)
             }
     }
 
+    if ( _savior->isVisible() && _ball->boundingBox().intersectsRect(_savior->boundingBox() ) ){ //COLLISION: ball/savior!
+        _speed_index = 0; //RESET
+        _ball_speed = _speeds[_speed_index]; //reset
+        _ball_y_direction = 1;
+        _savior->setVisible(false);
+    }
+
      CCSize winSize = CCDirector::sharedDirector()->getWinSize();
 
     if( (_ball->getPosition().x+_ball->getContentSize().width/2) >= winSize.width){ //right edge
@@ -94,11 +101,11 @@ void HelloWorld::update(float dx)
         _ball_y_direction = -1;
     }
 
-    if( (_ball->getPosition().y-_ball->getContentSize().height/2) <= 0){ //bottom edge
-        _ball_y_direction = 1;
-        _speed_index = 0;
-        _ball_speed = _speeds[_speed_index]; //Reset ball speed
-        
+    if( !_savior->isVisible()  && (_ball->getPosition().y-_ball->getContentSize().height/2) <= 0){ //bottom edge
+        //_ball_y_direction = 1;
+        //_speed_index = 0;
+        //_ball_speed = _speeds[_speed_index]; //Reset ball speed
+        //_ball->setVisible(false);
     }
 
     _ball->setPosition(CCPoint(_ball->getPosition().x + (_ball_speed*_ball_x_direction * _angle_multiplier), _ball->getPosition().y + (_ball_speed*_ball_y_direction) ) ); //DEBUG MOVE BALL
@@ -230,9 +237,9 @@ bool HelloWorld::init()
     _paddle->setPosition(ccp(winSize.width/2, SETY));
     this->addChild(_paddle);
 
-    //_savior = CCSprite::create("savior.png");
-    //_savior->setPosition(CCPoint(winSize.width/2, 0.0));
-    //this->addChild(_savior);
+    _savior = CCSprite::create("savior.png");
+    _savior->setPosition(CCPoint(winSize.width/2, 0.0));
+    this->addChild(_savior);
 
 
     //init ball
