@@ -109,13 +109,14 @@ void HelloWorld::update(float dx)
 //TOUCHES:
 void HelloWorld::ccTouchesBegan(CCSet* touches, CCEvent* event)
 {
-    // reset touch offset
+    //reset touch offset
     _touchOffset = CCPointZero;
 
     for( CCSetIterator it = touches->begin(); it != touches->end(); it++ ){
         CCTouch* touch = dynamic_cast<CCTouch*>(*it);
+        CCPoint convertedLocation = CCDirector::sharedDirector()->convertToGL(touch->getLocationInView());
 
-        if( touch )
+        if( touch && ( ccpDistance(_paddle->getPosition(), convertedLocation ) < 100.0f) )
         {
             // calculate offset from sprite to touch point
             _touchOffset = ccpSub(_paddle->getPosition(), CCDirector::sharedDirector()->convertToGL(touch->getLocationInView()) );
@@ -148,10 +149,11 @@ void HelloWorld::ccTouchesMoved(CCSet* touches, CCEvent* event)
     for( CCSetIterator it = touches->begin(); it != touches->end(); it++) 
     {
         CCTouch* touch = dynamic_cast<CCTouch*>(*it);
+        CCPoint convertedLocation = CCDirector::sharedDirector()->convertToGL(touch->getLocationInView());
 
         // set the new sprite position
         if( touch && _touchOffset.x && _touchOffset.y )
-            _paddle->setPosition( ccpAdd(CCDirector::sharedDirector()->convertToGL(touch->getLocationInView()), _touchOffset) ) ;
+            _paddle->setPosition( ccpAdd(CCDirector::sharedDirector()->convertToGL(touch->getLocationInView() ) , _touchOffset) ) ;
     }
     
 
@@ -164,10 +166,12 @@ void HelloWorld::ccTouchesEnded(CCSet* touches, CCEvent* event) {
     for( CCSetIterator it = touches->begin(); it != touches->end(); it++) 
     {
         CCTouch* touch = dynamic_cast<CCTouch*>(*it);
+        CCPoint convertedLocation = CCDirector::sharedDirector()->convertToGL(touch->getLocationInView());
+
         if( touch && _touchOffset.x && _touchOffset.y  )
         {
             // set the new sprite position
-            _paddle->setPosition( ccpAdd(CCDirector::sharedDirector()->convertToGL(touch->getLocationInView() ), _touchOffset) );
+            _paddle->setPosition( ccpAdd(CCDirector::sharedDirector()->convertToGL(touch->getLocationInView()) , _touchOffset) );
 
             // stop any existing actions are reset the scale
             _paddle->stopAllActions();
