@@ -98,6 +98,8 @@ bool HelloWorld::init()
     }
 
 
+
+
     //CALL GAME LOGIC EVERY SECOND
     //this->schedule( schedule_selector(HelloWorld::gameLogic), 1.0 );
 
