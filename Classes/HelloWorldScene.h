@@ -13,10 +13,12 @@ private:
 	cocos2d::CCSprite *_paddle;
 	cocos2d::CCArray *_bricks;
 
-	cocos2d::CCPoint *_ball_top;
-	cocos2d::CCPoint *_ball_right;
-	cocos2d::CCPoint *_ball_bottom;
-	cocos2d::CCPoint *_ball_left;
+	int _ball_x_direction; // + = right | - = left
+	int _ball_y_direction; // + = up | - = down
+	int _ball_speed;
+	int _speed_index;
+	int _speeds[4];
+
 	void update(float dx);
 	virtual void ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event);
 	virtual void ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* event);

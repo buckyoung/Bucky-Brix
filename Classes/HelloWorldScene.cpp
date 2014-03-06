@@ -1,7 +1,10 @@
 #include "HelloWorldScene.h"
 #include "SimpleAudioEngine.h"
 
-#define PTM_RATIO 32
+#define SPEED1 1
+#define SPEED2 3
+#define SPEED3 5
+#define SPEED4 7
 
 using namespace cocos2d;
 using namespace CocosDenshion;
@@ -33,12 +36,54 @@ void HelloWorld::update(float dx)
 
         //if mole->boundingBox().containsPoint(touchLocation)) {
 
-        if (_ball->boundingBox().intersectsRect(((CCSprite *)brick)->boundingBox())){
+        if (_ball->boundingBox().intersectsRect(((CCSprite *)brick)->boundingBox())){ //COLLISION: ball/brick
             ((CCSprite *)brick)->setVisible(false);
+            _ball_y_direction = -1;
+
+            //see if we need to increase the speed
+            if (_speed_index < ((CCSprite *)brick)->getTag()){
+                _speed_index++;
+            }
         }
+
     }
 
-    _ball->setPosition(CCPoint(_ball->getPosition().x+1, _ball->getPosition().y+1)); //DEBUG MOVE BALL
+    if (_ball->boundingBox().intersectsRect(_paddle->boundingBox() ) ){ //COLLISION: ball/paddle
+
+            if(_ball->boundingBox().getMinY() < _paddle->boundingBox().getMaxY()){ //Bounce off side of paddle
+                _ball_x_direction = - _ball_x_direction;
+            } else {
+                _ball_speed = _speeds[_speed_index]; //update SPEED
+                _ball_y_direction = 1;
+            }
+    }
+
+     CCSize winSize = CCDirector::sharedDirector()->getWinSize();
+
+    if( (_ball->getPosition().x+_ball->getContentSize().width/2) >= winSize.width){ //right edge
+        _ball_x_direction = -1;
+    }
+
+    if( (_ball->getPosition().x-_ball->getContentSize().width/2) <= 0){ //left edge
+        _ball_x_direction = 1;
+    }
+
+    if( (_ball->getPosition().y+_ball->getContentSize().height/2) >= winSize.height){ //top edge
+        if(_speed_index < 1){
+            _speed_index++;
+            _ball_speed = _speeds[_speed_index]; //Reset ball speed special
+        }
+        _ball_y_direction = -1;
+    }
+
+    if( (_ball->getPosition().y-_ball->getContentSize().height/2) <= 0){ //bottom edge
+        _ball_y_direction = 1;
+        _speed_index = 0;
+        _ball_speed = _speeds[_speed_index]; //Reset ball speed
+        
+    }
+
+    _ball->setPosition(CCPoint(_ball->getPosition().x + (_ball_speed*_ball_x_direction), _ball->getPosition().y + (_ball_speed*_ball_y_direction) ) ); //DEBUG MOVE BALL
 
 
 }
@@ -67,6 +112,8 @@ void HelloWorld::ccTouchesBegan(CCSet* touches, CCEvent* event)
 
 void HelloWorld::ccTouchesMoved(CCSet* touches, CCEvent* event)
 {
+
+
     
 
 }
@@ -74,7 +121,6 @@ void HelloWorld::ccTouchesMoved(CCSet* touches, CCEvent* event)
 
 // Method is called after the user is finished touching the screen or they have lifted their finger off the screen.
 void HelloWorld::ccTouchesEnded(CCSet* touches, CCEvent* event) {
- 
  
 }
 
@@ -90,6 +136,7 @@ bool HelloWorld::init()
 
     /////////////////////////////
     // BCY3 code
+
 
     this->setTouchEnabled(true); //Enable touches on the scene!
     _bricks = new CCArray();//Init array of _bricks
@@ -110,11 +157,23 @@ bool HelloWorld::init()
     _paddle->setPosition(ccp(winSize.width/2, 50));
     this->addChild(_paddle);
 
-    CCSprite *brick;   
+
+    //init ball
+    _ball_x_direction = 1;
+    _ball_y_direction = 1;
+    _speed_index = 0;
+    _speeds[0] = SPEED1;
+    _speeds[1] = SPEED2;
+    _speeds[2] = SPEED3;
+    _speeds[3] = SPEED4;
+    _ball_speed = _speeds[_speed_index];
+
+    CCSprite *brick;
     //Top Row
     for(int i = 0; i < 7; i++) {
 
         brick = CCSprite::create("brick_blue.png");
+        brick->setTag(3);
 
         static int padding= (winSize.width-((brick->getContentSize().width)*7))/8;
 
@@ -129,6 +188,7 @@ bool HelloWorld::init()
     for(int i = 0; i < 5; i++) {
 
         brick = CCSprite::create("brick_orange.png");
+        brick->setTag(2);
 
         static int padding= (winSize.width-((brick->getContentSize().width)*5))/6;
 
@@ -143,6 +203,7 @@ bool HelloWorld::init()
     for(int i = 0; i < 6; i++) {
         
         brick = CCSprite::create("brick_purple.png");
+        brick->setTag(1);
 
         static int padding= (winSize.width-((brick->getContentSize().width)*6))/7;
 
