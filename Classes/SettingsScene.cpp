@@ -120,7 +120,7 @@ bool Settings::init()
 
     CCLabelTTF *music = CCLabelTTF::create("Music Courtesy of Bit Flipper", "Silom.ttf", 20, CCSizeMake(winSize.width, 150), kCCTextAlignmentCenter);
     music->setAnchorPoint(ccp(0.5f,0.5f)); 
-    music->setPosition(ccp(winSize.width/2, 15));
+    music->setPosition(ccp(winSize.width/2, 5));
     music->setColor(ccc3(80,80,80)); //Grey
     this->addChild(music, 4);
 
@@ -162,7 +162,7 @@ bool Settings::init()
         
         main_menu->setPosition(0,0);
 
-
+   main_menu->setScale(0.5f); 
 
          this->addChild(main_menu, 10);
 

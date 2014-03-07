@@ -208,7 +208,7 @@ void HelloWorld::update(float dx)
 
         CCLabelTTF *gameby = CCLabelTTF::create("Score:", "Silom.ttf", 50, CCSizeMake(winSize.width, 150), kCCTextAlignmentCenter);
         gameby->setAnchorPoint(ccp(0.5f,0.5f)); 
-        gameby->setPosition(ccp(winSize.width/2, winSize.height/2 +50));
+        gameby->setPosition(ccp(winSize.width/2, winSize.height/2 + 50));
         gameby->setColor(ccc3(80,80,80)); //Grey
         this->addChild(gameby, 4);
 
@@ -223,7 +223,7 @@ void HelloWorld::update(float dx)
                                         menu_selector(HelloWorld::newGameCallback) );
 
                 new_game->setAnchorPoint(ccp(0.5f,0.5f)); 
-                new_game->setPosition(winSize.width/2, 200);
+                new_game->setPosition(winSize.width/2, 100);
                 new_game->setScale(0.5f);
 
                 CCMenu* main_menu = CCMenu::create(new_game, NULL);
