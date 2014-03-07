@@ -1,4 +1,5 @@
 #include "AppDelegate.h"
+#include "SimpleAudioEngine.h"
 
 #include "cocos2d.h"
 #include "HelloWorldScene.h"
@@ -41,7 +42,7 @@ void AppDelegate::applicationDidEnterBackground()
     CCDirector::sharedDirector()->pause();
 
     // if you use SimpleAudioEngine, it must be pause
-    // SimpleAudioEngine::sharedEngine()->pauseBackgroundMusic();
+     CocosDenshion::SimpleAudioEngine::sharedEngine()->pauseBackgroundMusic();
 }
 
 // this function will be called when the app is active again
@@ -50,5 +51,5 @@ void AppDelegate::applicationWillEnterForeground()
     CCDirector::sharedDirector()->resume();
     
     // if you use SimpleAudioEngine, it must resume here
-    // SimpleAudioEngine::sharedEngine()->resumeBackgroundMusic();
+     CocosDenshion::SimpleAudioEngine::sharedEngine()->resumeBackgroundMusic();
 }

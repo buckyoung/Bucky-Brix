@@ -9,6 +9,7 @@
 #define SPEED4 9
 #define SETY 70.0
 #define SAVIOR_AMOUNT 500 //not used anymore -- savior now divides score by 2
+#define PADDLEPIX 38 //number of pixels that the angled part of the paddle is
 
 using namespace cocos2d;
 using namespace CocosDenshion;
@@ -89,10 +90,10 @@ void HelloWorld::update(float dx)
                 _ball_speed = _speeds[_speed_index]; //update SPEED
                 _ball_y_direction = 1;
 
-                if((_ball->getPosition().x < _paddle->getPosition().x-_paddle->getContentSize().width/4) ) { //if it hits the left 1/4 of the paddle
+                if(_ball->getPosition().x < (_paddle->getPosition().x-_paddle->getContentSize().width/2)+ PADDLEPIX   ) { //if it hits the left 35 pixels of the paddle
                     _angle_multiplier = 1.4;
                     _ball_x_direction = -1;
-                } else if(_ball->getPosition().x > _paddle->getPosition().x+_paddle->getContentSize().width/4){
+                } else if(_ball->getPosition().x > (_paddle->getPosition().x+_paddle->getContentSize().width/2)-PADDLEPIX ){ //if it hits right
                     _angle_multiplier = 1.4;
                     _ball_x_direction = 1;
                 } else {

@@ -9,6 +9,15 @@ obj/local/armeabi/objs/game_shared/__/__/Classes/AppDelegate.o: \
  /Users/BuckYoung/cocos2d-x-2.1.5/HelloWorld/proj.android/../../cocos2dx/platform/android/CCPlatformDefine.h \
  /Users/BuckYoung/android-ndk-r9c/platforms/android-17/arch-arm/usr/include/android/log.h \
  /Users/BuckYoung/cocos2d-x-2.1.5/HelloWorld/proj.android/../../cocos2dx/platform/CCApplicationProtocol.h \
+ /Users/BuckYoung/cocos2d-x-2.1.5/HelloWorld/proj.android/../../CocosDenshion/android/../include/SimpleAudioEngine.h \
+ /Users/BuckYoung/cocos2d-x-2.1.5/HelloWorld/proj.android/../../CocosDenshion/android/../include/Export.h \
+ /Users/BuckYoung/android-ndk-r9c/sources/cxx-stl/gnu-libstdc++/4.6/include/typeinfo \
+ /Users/BuckYoung/android-ndk-r9c/platforms/android-17/arch-arm/usr/include/ctype.h \
+ /Users/BuckYoung/android-ndk-r9c/platforms/android-17/arch-arm/usr/include/sys/cdefs.h \
+ /Users/BuckYoung/android-ndk-r9c/platforms/android-17/arch-arm/usr/include/sys/cdefs_elf.h \
+ /Users/BuckYoung/android-ndk-r9c/platforms/android-17/arch-arm/usr/include/android/api-level.h \
+ /Users/BuckYoung/android-ndk-r9c/platforms/android-17/arch-arm/usr/include/string.h \
+ /Users/BuckYoung/android-ndk-r9c/platforms/android-17/arch-arm/usr/include/malloc.h \
  /Users/BuckYoung/cocos2d-x-2.1.5/HelloWorld/proj.android/../../cocos2dx/include/cocos2d.h \
  /Users/BuckYoung/cocos2d-x-2.1.5/HelloWorld/proj.android/../../cocos2dx/include/ccConfig.h \
  /Users/BuckYoung/cocos2d-x-2.1.5/HelloWorld/proj.android/../../cocos2dx/actions/CCAction.h \
@@ -82,7 +91,6 @@ obj/local/armeabi/objs/game_shared/__/__/Classes/AppDelegate.o: \
  /Users/BuckYoung/cocos2d-x-2.1.5/HelloWorld/proj.android/../../cocos2dx/actions/CCActionGrid.h \
  /Users/BuckYoung/cocos2d-x-2.1.5/HelloWorld/proj.android/../../cocos2dx/actions/CCActionInstant.h \
  /Users/BuckYoung/cocos2d-x-2.1.5/HelloWorld/proj.android/../../cocos2dx/include/ccTypeInfo.h \
- /Users/BuckYoung/android-ndk-r9c/sources/cxx-stl/gnu-libstdc++/4.6/include/typeinfo \
  /Users/BuckYoung/cocos2d-x-2.1.5/HelloWorld/proj.android/../../cocos2dx/actions/CCActionGrid.h \
  /Users/BuckYoung/cocos2d-x-2.1.5/HelloWorld/proj.android/../../cocos2dx/actions/CCActionProgressTimer.h \
  /Users/BuckYoung/cocos2d-x-2.1.5/HelloWorld/proj.android/../../cocos2dx/actions/CCActionGrid3D.h \
@@ -225,6 +233,24 @@ jni/../../Classes/AppDelegate.h:
 /Users/BuckYoung/android-ndk-r9c/platforms/android-17/arch-arm/usr/include/android/log.h:
 
 /Users/BuckYoung/cocos2d-x-2.1.5/HelloWorld/proj.android/../../cocos2dx/platform/CCApplicationProtocol.h:
+
+/Users/BuckYoung/cocos2d-x-2.1.5/HelloWorld/proj.android/../../CocosDenshion/android/../include/SimpleAudioEngine.h:
+
+/Users/BuckYoung/cocos2d-x-2.1.5/HelloWorld/proj.android/../../CocosDenshion/android/../include/Export.h:
+
+/Users/BuckYoung/android-ndk-r9c/sources/cxx-stl/gnu-libstdc++/4.6/include/typeinfo:
+
+/Users/BuckYoung/android-ndk-r9c/platforms/android-17/arch-arm/usr/include/ctype.h:
+
+/Users/BuckYoung/android-ndk-r9c/platforms/android-17/arch-arm/usr/include/sys/cdefs.h:
+
+/Users/BuckYoung/android-ndk-r9c/platforms/android-17/arch-arm/usr/include/sys/cdefs_elf.h:
+
+/Users/BuckYoung/android-ndk-r9c/platforms/android-17/arch-arm/usr/include/android/api-level.h:
+
+/Users/BuckYoung/android-ndk-r9c/platforms/android-17/arch-arm/usr/include/string.h:
+
+/Users/BuckYoung/android-ndk-r9c/platforms/android-17/arch-arm/usr/include/malloc.h:
 
 /Users/BuckYoung/cocos2d-x-2.1.5/HelloWorld/proj.android/../../cocos2dx/include/cocos2d.h:
 
@@ -371,8 +397,6 @@ jni/../../Classes/AppDelegate.h:
 /Users/BuckYoung/cocos2d-x-2.1.5/HelloWorld/proj.android/../../cocos2dx/actions/CCActionInstant.h:
 
 /Users/BuckYoung/cocos2d-x-2.1.5/HelloWorld/proj.android/../../cocos2dx/include/ccTypeInfo.h:
-
-/Users/BuckYoung/android-ndk-r9c/sources/cxx-stl/gnu-libstdc++/4.6/include/typeinfo:
 
 /Users/BuckYoung/cocos2d-x-2.1.5/HelloWorld/proj.android/../../cocos2dx/actions/CCActionGrid.h:
 
