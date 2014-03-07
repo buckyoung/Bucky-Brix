@@ -254,7 +254,7 @@ bool HelloWorld::init()
     // BCY3 code
 
     //Init music
-   // CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic("background.wav", true);
+    CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic("background.wav", true);
 
 
 
