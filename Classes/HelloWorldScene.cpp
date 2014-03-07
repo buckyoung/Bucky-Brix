@@ -8,7 +8,7 @@
 #define SPEED3 7
 #define SPEED4 9
 #define SETY 70.0
-#define SAVIOR_AMOUNT 500
+#define SAVIOR_AMOUNT 500 //not used anymore -- savior now divides score by 2
 
 using namespace cocos2d;
 using namespace CocosDenshion;
@@ -278,13 +278,13 @@ bool HelloWorld::init()
     this->addChild(_paddle);
 
     _savior = CCSprite::create("savior.png");
-    _savior->setPosition(CCPoint(winSize.width/2, 15));
+    _savior->setPosition(CCPoint(winSize.width/2, 10));
     this->addChild(_savior);
 
 
     //INIT score 
     _score = 0;
-    _score_label = CCLabelTTF::create("0", "Silom.ttf", 60, CCSizeMake(300, 200), kCCTextAlignmentCenter);
+    _score_label = CCLabelTTF::create("0", "Silom.ttf", 80, CCSizeMake(300, 150), kCCTextAlignmentCenter);
     _score_label->setPosition(ccp(winSize.width/2, winSize.height/2));
     _score_label->setColor(ccc3(180,180,180)); //Grey
     _score_label->setAnchorPoint(ccp(0.5f,0.5f)); 
