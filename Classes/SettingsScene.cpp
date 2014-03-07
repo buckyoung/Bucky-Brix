@@ -135,7 +135,7 @@ bool Settings::init()
                                         menu_selector(Settings::sfxCallback) );
 
     new_game->setAnchorPoint(ccp(0.5f,0.5f)); 
-    new_game->setPosition(winSize.width/2, title->getPositionY()-140);
+    new_game->setPosition(winSize.width/2, title->getPositionY()-150);
 
     CCMenuItem *settings = CCMenuItemImage::create(
                                         "music.png",
@@ -144,7 +144,7 @@ bool Settings::init()
                                         menu_selector(Settings::musicCallback) );
 
             settings->setAnchorPoint(ccp(0.5f,0.5f)); 
-        settings->setPosition(winSize.width/2, new_game->getPositionY()-50);
+        settings->setPosition(winSize.width/2, new_game->getPositionY()-140);
 
             CCMenuItem *back = CCMenuItemImage::create(
                                         "back.png",
@@ -153,7 +153,7 @@ bool Settings::init()
                                         menu_selector(Settings::backCallback) );
 
             back->setAnchorPoint(ccp(0.5f,0.5f)); 
-        back->setPosition(winSize.width/2, settings->getPositionY()-50);
+        back->setPosition(winSize.width/2, settings->getPositionY()-140);
 
 
         CCMenu* main_menu = CCMenu::create(new_game, settings, back, NULL);

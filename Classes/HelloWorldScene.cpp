@@ -49,6 +49,7 @@ void HelloWorld::dec_score(int amt){
 
 void HelloWorld::newGameCallback(CCObject* pSender)
 {
+    CocosDenshion::SimpleAudioEngine::sharedEngine()->stopBackgroundMusic();
     CCDirector::sharedDirector()->replaceScene(Home::scene());
 
 }

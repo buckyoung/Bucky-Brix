@@ -84,9 +84,11 @@ bool Home::init()
     // BCY3 code
 
          //Init music
-    CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic("background.wav", true);
-    CocosDenshion::SimpleAudioEngine::sharedEngine()->setBackgroundMusicVolume(0.8);
-    CocosDenshion::SimpleAudioEngine::sharedEngine()->setEffectsVolume(1.0);
+    if(! CocosDenshion::SimpleAudioEngine::sharedEngine()->isBackgroundMusicPlaying () ){
+        CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic("background.wav", true);
+        CocosDenshion::SimpleAudioEngine::sharedEngine()->setBackgroundMusicVolume(0.8);
+        CocosDenshion::SimpleAudioEngine::sharedEngine()->setEffectsVolume(1.0);
+    }
 
     //Init sprites
     _background = CCSprite::create("background.png");
@@ -95,10 +97,10 @@ bool Home::init()
     this->addChild(_background,-2);
 
     //Init ball
-        _ball_x_direction = 1;
-    _ball_y_direction = 1;
+        _ball_x_direction = -1;
+    _ball_y_direction = -1;
         _ball = CCSprite::create("ball.png");
-    _ball->setPosition(ccp(100, 100));
+    _ball->setPosition(ccp(winSize.width/2, winSize.height/2 - 120));
     this->addChild(_ball, -1);
 
 
