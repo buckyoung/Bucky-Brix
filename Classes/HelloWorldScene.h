@@ -19,10 +19,15 @@ private:
 	int _ball_speed;
 	int _speed_index;
 	int _speeds[4];
-	int _angle_multiplier;
+	float _angle_multiplier;
 
 	cocos2d::CCPoint _touchOffset;
 
+	int _score;
+	cocos2d::CCLabelTTF *_score_label;
+
+	void inc_score(int inc);
+	void dec_score(int amt);
 	void update(float dx);
 	virtual void ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event);
 	virtual void ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* event);

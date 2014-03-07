@@ -1,27 +1,14 @@
 #include "HelloWorldScene.h"
 #include "SimpleAudioEngine.h"
 
-
-
-
-
-//TODO: 1)Score     2)Other Scenes     then3)Particles 
-
-
-
-
-
-
-
-
-
-
+//TODO:     2)Other Scenes     then3)Particles 
 
 #define SPEED1 2
-#define SPEED2 4
-#define SPEED3 6
-#define SPEED4 8
+#define SPEED2 5
+#define SPEED3 7
+#define SPEED4 9
 #define SETY 70.0
+#define SAVIOR_AMOUNT 500
 
 using namespace cocos2d;
 using namespace CocosDenshion;
@@ -41,6 +28,23 @@ CCScene* HelloWorld::scene()
     return scene;
 }
 
+void HelloWorld::inc_score(int tag){
+    _score = _score + (_speeds[_speed_index] * tag * _angle_multiplier * 10);
+    char string[12] = { 0 };
+    sprintf(string, "%d", _score);
+    _score_label->setString(string);
+
+}
+
+void HelloWorld::dec_score(int amt){
+    _score = _score /2 ; //NOT USING AMOUNT ANYMORE! ((( = _score - amt )))
+    _score = (_score < 0)?0:_score;
+    char string[12] = { 0 };
+    sprintf(string, "%d", _score);
+    _score_label->setString(string);
+
+}
+
 //this->scheduleUpdate() calls HelloWorld::update(float FRAMERATE:dt) --- scale velocity by dt factor
 //How oftern is update run? every tick?
 void HelloWorld::update(float dx)
@@ -56,7 +60,7 @@ void HelloWorld::update(float dx)
         if (_ball->boundingBox().intersectsRect(((CCSprite *)brick)->boundingBox())){ //COLLISION: ball/brick
             ((CCSprite *)brick)->setVisible(false);
             CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("brick.wav"); 
-            //CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("break.wav"); 
+            inc_score( ((CCSprite *)brick)->getTag() );
             
             if(_ball->boundingBox().getMaxX() < ((CCSprite *)brick)->boundingBox().getMinX()+SPEED4 ){ //Hit left side of brick
                 _ball_x_direction = -1;
@@ -86,10 +90,10 @@ void HelloWorld::update(float dx)
                 _ball_y_direction = 1;
 
                 if((_ball->getPosition().x < _paddle->getPosition().x-_paddle->getContentSize().width/4) ) { //if it hits the left 1/4 of the paddle
-                    _angle_multiplier = 1.5;
+                    _angle_multiplier = 1.4;
                     _ball_x_direction = -1;
                 } else if(_ball->getPosition().x > _paddle->getPosition().x+_paddle->getContentSize().width/4){
-                    _angle_multiplier = 1.5;
+                    _angle_multiplier = 1.4;
                     _ball_x_direction = 1;
                 } else {
                     _angle_multiplier = 1;
@@ -98,7 +102,8 @@ void HelloWorld::update(float dx)
     }
 
     if ( _savior->isVisible() && _ball->boundingBox().intersectsRect(_savior->boundingBox() ) ){ //COLLISION: ball/savior!
-        CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("savior.wav"); 
+        CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("savior.wav");
+        dec_score(SAVIOR_AMOUNT); 
         _speed_index = 0; //RESET
         _ball_speed = _speeds[_speed_index]; //reset
         _ball_y_direction = 1;
@@ -234,6 +239,8 @@ void HelloWorld::ccTouchesEnded(CCSet* touches, CCEvent* event) {
 // on "init" you need to initialize your instance
 bool HelloWorld::init()
 {
+
+
     //////////////////////////////
     // 1. super init first
     if ( !CCLayer::init() )
@@ -241,22 +248,26 @@ bool HelloWorld::init()
         return false;
     }
 
+    CCSize winSize = CCDirector::sharedDirector()->getWinSize();
+
     /////////////////////////////
     // BCY3 code
 
     //Init music
-   // CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic("background.wav", true); 
+   // CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic("background.wav", true);
+
+
 
     this->setTouchEnabled(true); //Enable touches on the scene!
     _bricks = new CCArray();//Init array of _bricks
 
-    CCSize winSize = CCDirector::sharedDirector()->getWinSize();
+   
     
     //Sprites:
     _background = CCSprite::create("background.png");
     _background->setPosition(ccp(winSize.width/2, winSize.height/2)); //center
    // _background->setSize();
-    this->addChild(_background,-1);
+    this->addChild(_background,-2);
 
     _ball = CCSprite::create("ball.png");
     _ball->setPosition(ccp(100, 100));
@@ -267,9 +278,17 @@ bool HelloWorld::init()
     this->addChild(_paddle);
 
     _savior = CCSprite::create("savior.png");
-    _savior->setPosition(CCPoint(winSize.width/2, 0.0));
+    _savior->setPosition(CCPoint(winSize.width/2, 15));
     this->addChild(_savior);
 
+
+    //INIT score 
+    _score = 0;
+    _score_label = CCLabelTTF::create("0", "Silom.ttf", 60, CCSizeMake(300, 200), kCCTextAlignmentCenter);
+    _score_label->setPosition(ccp(winSize.width/2, winSize.height/2));
+    _score_label->setColor(ccc3(180,180,180)); //Grey
+    _score_label->setAnchorPoint(ccp(0.5f,0.5f)); 
+    this->addChild(_score_label, -1);
 
     //init ball
     _ball_x_direction = 1;
