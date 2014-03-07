@@ -1,6 +1,6 @@
 #include "HelloWorldScene.h"
 #include "SimpleAudioEngine.h"
-#include "GameOverScene.h"   
+#include "HomeScene.h"
 
 //TODO:     2)Other Scenes     then3)Particles 
 
@@ -47,119 +47,190 @@ void HelloWorld::dec_score(int amt){
 
 }
 
+void HelloWorld::newGameCallback(CCObject* pSender)
+{
+    CCDirector::sharedDirector()->replaceScene(Home::scene());
+
+}
+
 //this->scheduleUpdate() calls HelloWorld::update(float FRAMERATE:dt) --- scale velocity by dt factor
 //How oftern is update run? every tick?
 void HelloWorld::update(float dx)
 {
-    CCObject* brick;
-    CCARRAY_FOREACH(_bricks, brick){
-        if (! ((CCSprite *) brick)->isVisible() ){ //skip if the brick is already broken
-            continue;
-        }
+        CCObject* brick;
+      CCSize winSize = CCDirector::sharedDirector()->getWinSize();
 
-        //if mole->boundingBox().containsPoint(touchLocation)) {
+    if(_running){
 
-        if (_ball->boundingBox().intersectsRect(((CCSprite *)brick)->boundingBox())){ //COLLISION: ball/brick
-            ((CCSprite *)brick)->setVisible(false);
-            CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("brick.wav"); 
-            inc_score( ((CCSprite *)brick)->getTag() );
-            _total_bricks--;
+        CCARRAY_FOREACH(_bricks, brick){
 
-            //CHECK FOR WIN!
-            if (_total_bricks == 0){
-                    CCScene *gameOverScene = GameOver::scene();
-                    //char string[30] = { 0 };
-                    //sprintf(string, "You WIN! Score: %d", _score);
-                    //gameOverScene->get_label()->setString(string);
-                    CCDirector::sharedDirector()->replaceScene(gameOverScene);
-            }
-            
-            if(_ball->boundingBox().getMaxX() < ((CCSprite *)brick)->boundingBox().getMinX()+SPEED4 ){ //Hit left side of brick
-                _ball_x_direction = -1;
-            } else if (_ball->boundingBox().getMinX() > ((CCSprite *)brick)->boundingBox().getMaxX()-SPEED4){ //hit right side of brick
-                _ball_x_direction = 1;
-            } else {
-                _ball_y_direction = -1;
+            if (! ((CCSprite *) brick)->isVisible() ){ //skip if the brick is already broken
+                continue;
             }
 
-            //see if we need to increase the speed
-            if (_speed_index < ((CCSprite *)brick)->getTag()){
-                _speed_index++;
-            }
-        }
+            //if mole->boundingBox().containsPoint(touchLocation)) {
 
-    }
+            if (_ball->boundingBox().intersectsRect(((CCSprite *)brick)->boundingBox())){ //COLLISION: ball/brick
+                ((CCSprite *)brick)->setVisible(false);
+                CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("brick.wav"); 
+                inc_score( ((CCSprite *)brick)->getTag() );
+                _total_bricks--;
 
-    if (_ball->boundingBox().intersectsRect(_paddle->boundingBox() ) ){ //COLLISION: ball/paddle
-
-            if(_ball->boundingBox().getMinY() < _paddle->boundingBox().getMaxY() - SPEED4*1.5 ){ //hit side of paddle -- give some lee-way
-                //do nothing
-            } else { //Hit top of paddle
-
-                CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("paddle.wav"); 
-
-                _ball_speed = _speeds[_speed_index]; //update SPEED
-                _ball_y_direction = 1;
-
-                if(_ball->getPosition().x < (_paddle->getPosition().x-_paddle->getContentSize().width/2)+ PADDLEPIX   ) { //if it hits the left 35 pixels of the paddle
-                    _angle_multiplier = 1.4;
+                //CHECK FOR WIN!
+                if (_total_bricks == 0){
+                    CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("winsound.wav"); 
+                    CocosDenshion::SimpleAudioEngine::sharedEngine()->stopBackgroundMusic();
+                    _won = true;
+                    _running = false;
+                    _once = true;
+                }
+                
+                if(_ball->boundingBox().getMaxX() < ((CCSprite *)brick)->boundingBox().getMinX()+SPEED4 ){ //Hit left side of brick
                     _ball_x_direction = -1;
-                } else if(_ball->getPosition().x > (_paddle->getPosition().x+_paddle->getContentSize().width/2)-PADDLEPIX ){ //if it hits right
-                    _angle_multiplier = 1.4;
+                } else if (_ball->boundingBox().getMinX() > ((CCSprite *)brick)->boundingBox().getMaxX()-SPEED4){ //hit right side of brick
                     _ball_x_direction = 1;
                 } else {
-                    _angle_multiplier = 1;
+                    _ball_y_direction = -1;
+                }
+
+                //see if we need to increase the speed
+                if (_speed_index < ((CCSprite *)brick)->getTag()){
+                    _speed_index++;
                 }
             }
-    }
 
-    if ( _savior->isVisible() && _ball->boundingBox().intersectsRect(_savior->boundingBox() ) ){ //COLLISION: ball/savior!
-        CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("savior.wav");
-        dec_score(SAVIOR_AMOUNT); 
-        _speed_index = 0; //RESET
-        _ball_speed = _speeds[_speed_index]; //reset
-        _ball_y_direction = 1;
+        }
+
+        if (_ball->boundingBox().intersectsRect(_paddle->boundingBox() ) ){ //COLLISION: ball/paddle
+
+                if(_ball->boundingBox().getMinY() < _paddle->boundingBox().getMaxY() - SPEED4*1.5 ){ //hit side of paddle -- give some lee-way
+                    //do nothing
+                } else { //Hit top of paddle
+
+                    CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("paddle.wav"); 
+
+                    _ball_speed = _speeds[_speed_index]; //update SPEED
+                    _ball_y_direction = 1;
+
+                    if(_ball->getPosition().x < (_paddle->getPosition().x-_paddle->getContentSize().width/2)+ PADDLEPIX   ) { //if it hits the left 35 pixels of the paddle
+                        _angle_multiplier = 1.4;
+                        _ball_x_direction = -1;
+                    } else if(_ball->getPosition().x > (_paddle->getPosition().x+_paddle->getContentSize().width/2)-PADDLEPIX ){ //if it hits right
+                        _angle_multiplier = 1.4;
+                        _ball_x_direction = 1;
+                    } else {
+                        _angle_multiplier = 1;
+                    }
+                }
+        }
+
+        if ( _savior->isVisible() && _ball->boundingBox().intersectsRect(_savior->boundingBox() ) ){ //COLLISION: ball/savior!
+            CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("savior.wav");
+            dec_score(SAVIOR_AMOUNT); 
+            _speed_index = 0; //RESET
+            _ball_speed = _speeds[_speed_index]; //reset
+            _ball_y_direction = 1;
+            _savior->setVisible(false);
+
+            CCActionInterval* effect = CCBlink::create(1, 10);
+            _ball->runAction( effect );
+
+        }
+
+       
+
+        if( (_ball->getPosition().x+_ball->getContentSize().width/2) >= winSize.width){ //right edge
+            _ball_x_direction = -1;
+                   CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("paddle.wav"); 
+        }
+
+        if( (_ball->getPosition().x-_ball->getContentSize().width/2) <= 0){ //left edge
+            _ball_x_direction = 1;
+                   CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("paddle.wav"); 
+        }
+
+        if( (_ball->getPosition().y+_ball->getContentSize().height/2) >= winSize.height){ //top edge
+            if(_speed_index < 3){
+                _speed_index++;
+                _ball_speed = _speeds[_speed_index]; //Reset ball speed special
+            }
+            _ball_y_direction = -1;
+                   CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("paddle.wav"); 
+        }
+
+        if( !_savior->isVisible()  && (_ball->getPosition().y-_ball->getContentSize().height/2) <= 0){ //bottom edge
+            //_ball_y_direction = 1;
+            //_speed_index = 0;
+            //_ball_speed = _speeds[_speed_index]; //Reset ball speed
+            //_ball->setVisible(false);
+
+            //GAME OVER LOSE
+            CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("losesound.wav"); 
+                    CocosDenshion::SimpleAudioEngine::sharedEngine()->stopBackgroundMusic();
+                        _won = false;
+                        _running = false;
+                        _once = true;
+
+        }
+            _ball->setPosition(CCPoint(_ball->getPosition().x + (_ball_speed*_ball_x_direction * _angle_multiplier), _ball->getPosition().y + (_ball_speed*_ball_y_direction) ) ); //DEBUG MOVE BALL
+     
+     }//END IF RUNNING
+
+     if (!_running && _once){
+        _once = false;
+
+        _ball->setVisible(false);
+        _paddle->setVisible(false);
         _savior->setVisible(false);
 
-        CCActionInterval* effect = CCBlink::create(1, 10);
-        _ball->runAction( effect );
-
-    }
-
-     CCSize winSize = CCDirector::sharedDirector()->getWinSize();
-
-    if( (_ball->getPosition().x+_ball->getContentSize().width/2) >= winSize.width){ //right edge
-        _ball_x_direction = -1;
-    }
-
-    if( (_ball->getPosition().x-_ball->getContentSize().width/2) <= 0){ //left edge
-        _ball_x_direction = 1;
-    }
-
-    if( (_ball->getPosition().y+_ball->getContentSize().height/2) >= winSize.height){ //top edge
-        if(_speed_index < 1){
-            _speed_index++;
-            _ball_speed = _speeds[_speed_index]; //Reset ball speed special
+        CCARRAY_FOREACH(_bricks, brick){
+            ((CCSprite *) brick)->setVisible(false);
         }
-        _ball_y_direction = -1;
-    }
 
-    if( !_savior->isVisible()  && (_ball->getPosition().y-_ball->getContentSize().height/2) <= 0){ //bottom edge
-        //_ball_y_direction = 1;
-        //_speed_index = 0;
-        //_ball_speed = _speeds[_speed_index]; //Reset ball speed
-        //_ball->setVisible(false);
+        //Won
+        if(_won){
+            CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic("winsong.wav", false);
+                    CCLabelTTF *title = CCLabelTTF::create("You WON!", "Silom.ttf", 80, CCSizeMake(winSize.width, 150), kCCTextAlignmentCenter);
+            title->setAnchorPoint(ccp(0.5f,0.5f)); 
+            title->setPosition(ccp(winSize.width/2, winSize.height-100));
+            title->setColor(ccc3(80,80,80)); //Grey
+            this->addChild(title, 4);
 
-        //GAME OVER LOSE
-                    CCScene *gameOverScene = GameOver::scene();
-                    //char string[30] = { 0 };
-                    //sprintf(string, "You WIN! Score: %d", _score);
-                    //gameOverScene->get_label()->setString(string);
-                    CCDirector::sharedDirector()->replaceScene(gameOverScene);
+        } else {
+                    CCLabelTTF *title = CCLabelTTF::create("You LOST!", "Silom.ttf", 80, CCSizeMake(winSize.width, 150), kCCTextAlignmentCenter);
+            title->setAnchorPoint(ccp(0.5f,0.5f)); 
+            title->setPosition(ccp(winSize.width/2, winSize.height-100));
+            title->setColor(ccc3(80,80,80)); //Grey
+            this->addChild(title, 4);
 
-    }
+        }
 
-    _ball->setPosition(CCPoint(_ball->getPosition().x + (_ball_speed*_ball_x_direction * _angle_multiplier), _ball->getPosition().y + (_ball_speed*_ball_y_direction) ) ); //DEBUG MOVE BALL
+        CCLabelTTF *gameby = CCLabelTTF::create("Score:", "Silom.ttf", 50, CCSizeMake(winSize.width, 150), kCCTextAlignmentCenter);
+        gameby->setAnchorPoint(ccp(0.5f,0.5f)); 
+        gameby->setPosition(ccp(winSize.width/2, winSize.height/2 +50));
+        gameby->setColor(ccc3(80,80,80)); //Grey
+        this->addChild(gameby, 4);
+
+        _score_label->setColor(ccc3(0,0,0)); //black
+
+
+
+            CCMenuItem *new_game = CCMenuItemImage::create(
+                                        "newgame.png",
+                                        "newgame.png",
+                                        this,
+                                        menu_selector(HelloWorld::newGameCallback) );
+
+                new_game->setAnchorPoint(ccp(0.5f,0.5f)); 
+                new_game->setPosition(winSize.width/2, 200);
+                new_game->setScale(0.5f);
+
+                CCMenu* main_menu = CCMenu::create(new_game, NULL);
+
+                main_menu->setAnchorPoint(ccp(0.5f,0.5f)); 
+                main_menu->setPosition(0,0);
+                this->addChild(main_menu, 10);
+     }
 
 
 }
@@ -273,10 +344,9 @@ bool HelloWorld::init()
     /////////////////////////////
     // BCY3 code
 
-    //Init music
-    CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic("background.wav", true);
 
-
+    _running = true;
+    _won = false;
 
     this->setTouchEnabled(true); //Enable touches on the scene!
     _bricks = new CCArray();//Init array of _bricks
@@ -305,9 +375,10 @@ bool HelloWorld::init()
     //INIT score 
     _score = 0;
     _score_label = CCLabelTTF::create("0", "Silom.ttf", 80, CCSizeMake(300, 150), kCCTextAlignmentCenter);
+    _score_label->setAnchorPoint(ccp(0.5f,0.5f)); 
     _score_label->setPosition(ccp(winSize.width/2, winSize.height/2));
     _score_label->setColor(ccc3(180,180,180)); //Grey
-    _score_label->setAnchorPoint(ccp(0.5f,0.5f)); 
+    
     this->addChild(_score_label, -1);
 
     //init ball

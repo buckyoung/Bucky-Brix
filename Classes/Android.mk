@@ -5,7 +5,8 @@ include $(CLEAR_VARS)
 LOCAL_SRC_FILES := \
 AppDelegate.cpp \
 HelloWorldScene.cpp \
-GameOverScene.cpp
+SettingsScene.cpp \
+HomeScene.cpp 
 
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/..
 

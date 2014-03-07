@@ -16,6 +16,10 @@ private:
 
 	int _total_bricks;
 
+	bool _running;
+	bool _won;
+	bool _once;
+
 	int _ball_x_direction; // + = right | - = left
 	int _ball_y_direction; // + = up | - = down
 	int _ball_speed;
@@ -34,6 +38,8 @@ private:
 	virtual void ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event);
 	virtual void ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* event);
 	virtual void ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* event);
+
+	void newGameCallback(CCObject* pSender);
 
 
 	

@@ -206,7 +206,7 @@ obj/local/armeabi/objs/game_shared/__/__/Classes/HelloWorldScene.o: \
  /Users/BuckYoung/cocos2d-x-2.1.5/HelloWorld/proj.android/../../cocos2dx/support/component/CCComponentContainer.h \
  /Users/BuckYoung/cocos2d-x-2.1.5/HelloWorld/proj.android/../../CocosDenshion/android/../include/SimpleAudioEngine.h \
  /Users/BuckYoung/cocos2d-x-2.1.5/HelloWorld/proj.android/../../CocosDenshion/android/../include/Export.h \
- jni/../../Classes/GameOverScene.h
+ jni/../../Classes/HomeScene.h
 
 jni/../../Classes/HelloWorldScene.h:
 
@@ -620,4 +620,4 @@ jni/../../Classes/HelloWorldScene.h:
 
 /Users/BuckYoung/cocos2d-x-2.1.5/HelloWorld/proj.android/../../CocosDenshion/android/../include/Export.h:
 
-jni/../../Classes/GameOverScene.h:
+jni/../../Classes/HomeScene.h:
