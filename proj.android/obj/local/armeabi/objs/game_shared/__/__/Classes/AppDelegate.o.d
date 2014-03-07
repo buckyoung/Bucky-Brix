@@ -18,6 +18,7 @@ obj/local/armeabi/objs/game_shared/__/__/Classes/AppDelegate.o: \
  /Users/BuckYoung/android-ndk-r9c/platforms/android-17/arch-arm/usr/include/android/api-level.h \
  /Users/BuckYoung/android-ndk-r9c/platforms/android-17/arch-arm/usr/include/string.h \
  /Users/BuckYoung/android-ndk-r9c/platforms/android-17/arch-arm/usr/include/malloc.h \
+ jni/../../Classes/GameOverScene.h \
  /Users/BuckYoung/cocos2d-x-2.1.5/HelloWorld/proj.android/../../cocos2dx/include/cocos2d.h \
  /Users/BuckYoung/cocos2d-x-2.1.5/HelloWorld/proj.android/../../cocos2dx/include/ccConfig.h \
  /Users/BuckYoung/cocos2d-x-2.1.5/HelloWorld/proj.android/../../cocos2dx/actions/CCAction.h \
@@ -251,6 +252,8 @@ jni/../../Classes/AppDelegate.h:
 /Users/BuckYoung/android-ndk-r9c/platforms/android-17/arch-arm/usr/include/string.h:
 
 /Users/BuckYoung/android-ndk-r9c/platforms/android-17/arch-arm/usr/include/malloc.h:
+
+jni/../../Classes/GameOverScene.h:
 
 /Users/BuckYoung/cocos2d-x-2.1.5/HelloWorld/proj.android/../../cocos2dx/include/cocos2d.h:
 

@@ -14,6 +14,8 @@ private:
 	cocos2d::CCSprite *_savior;
 	cocos2d::CCArray *_bricks;
 
+	int _total_bricks;
+
 	int _ball_x_direction; // + = right | - = left
 	int _ball_y_direction; // + = up | - = down
 	int _ball_speed;

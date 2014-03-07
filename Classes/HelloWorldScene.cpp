@@ -1,5 +1,6 @@
 #include "HelloWorldScene.h"
 #include "SimpleAudioEngine.h"
+#include "GameOverScene.h"   
 
 //TODO:     2)Other Scenes     then3)Particles 
 
@@ -62,6 +63,16 @@ void HelloWorld::update(float dx)
             ((CCSprite *)brick)->setVisible(false);
             CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("brick.wav"); 
             inc_score( ((CCSprite *)brick)->getTag() );
+            _total_bricks--;
+
+            //CHECK FOR WIN!
+            if (_total_bricks == 0){
+                    CCScene *gameOverScene = GameOver::scene();
+                    //char string[30] = { 0 };
+                    //sprintf(string, "You WIN! Score: %d", _score);
+                    //gameOverScene->get_label()->setString(string);
+                    CCDirector::sharedDirector()->replaceScene(gameOverScene);
+            }
             
             if(_ball->boundingBox().getMaxX() < ((CCSprite *)brick)->boundingBox().getMinX()+SPEED4 ){ //Hit left side of brick
                 _ball_x_direction = -1;
@@ -138,6 +149,14 @@ void HelloWorld::update(float dx)
         //_speed_index = 0;
         //_ball_speed = _speeds[_speed_index]; //Reset ball speed
         //_ball->setVisible(false);
+
+        //GAME OVER LOSE
+                    CCScene *gameOverScene = GameOver::scene();
+                    //char string[30] = { 0 };
+                    //sprintf(string, "You WIN! Score: %d", _score);
+                    //gameOverScene->get_label()->setString(string);
+                    CCDirector::sharedDirector()->replaceScene(gameOverScene);
+
     }
 
     _ball->setPosition(CCPoint(_ball->getPosition().x + (_ball_speed*_ball_x_direction * _angle_multiplier), _ball->getPosition().y + (_ball_speed*_ball_y_direction) ) ); //DEBUG MOVE BALL
@@ -303,6 +322,7 @@ bool HelloWorld::init()
     _angle_multiplier = 1;
 
     CCSprite *brick;
+    _total_bricks = 0;
     //Top Row
     for(int i = 0; i < 7; i++) {
 
@@ -315,6 +335,7 @@ bool HelloWorld::init()
         brick->setPosition(ccp(xOffset, winSize.height - brick->getContentSize().height * .5) );
         this->addChild(brick); //Add to screen
         _bricks->addObject(brick); //Add to brick array
+        _total_bricks++;
         
     }
 
@@ -330,6 +351,7 @@ bool HelloWorld::init()
         brick->setPosition(ccp(xOffset, winSize.height - brick->getContentSize().height * 1.5) ); //set row in relation to top row
         this->addChild(brick); //Add to screen
         _bricks->addObject(brick); //Add to brick array
+        _total_bricks++;
         
     }
 
@@ -345,6 +367,7 @@ bool HelloWorld::init()
         brick->setPosition(ccp(xOffset, winSize.height - brick->getContentSize().height * 2.5)); //set row in relation to the top of the screen and the size of the _bricks
         this->addChild(brick); //Add to screen
         _bricks->addObject(brick); //Add to brick array
+        _total_bricks++;
         
     }
 
