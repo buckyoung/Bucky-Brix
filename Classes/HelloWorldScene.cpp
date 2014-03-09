@@ -88,6 +88,8 @@ void HelloWorld::update(float dx)
                     _ball_x_direction = -1;
                 } else if (_ball->boundingBox().getMinX() > ((CCSprite *)brick)->boundingBox().getMaxX()-SPEED4){ //hit right side of brick
                     _ball_x_direction = 1;
+                } else if(_ball->boundingBox().getMinY() > ((CCSprite *)brick)->boundingBox().getMaxY()-SPEED4 ) {
+                    _ball_y_direction = 1; //BOUNCE UP OFF TOP OF BLOcK!
                 } else {
                     _ball_y_direction = -1;
                 }
@@ -100,7 +102,7 @@ void HelloWorld::update(float dx)
 
         }
 
-        if (_ball->boundingBox().intersectsRect(_paddle->boundingBox() ) ){ //COLLISION: ball/paddle
+        if (_ball->boundingBox().intersectsRect(_paddle->boundingBox() ) && _ball->numberOfRunningActions() == 0 ){ //COLLISION: ball/paddle
 
                 if(_ball->boundingBox().getMinY() < _paddle->boundingBox().getMaxY()/2){ //hit side of paddle -- give some lee-way
                     //do nothing
@@ -111,7 +113,7 @@ void HelloWorld::update(float dx)
                     _ball_speed = _speeds[_speed_index]; //update SPEED
                     _ball_y_direction = 1;
 
-                    if(_ball->getPosition().x < (_paddle->getPosition().x-_paddle->getContentSize().width/2)+ PADDLEPIX   ) { //if it hits the left 35 pixels of the paddle
+                    if(_ball->getPosition().x < (_paddle->getPosition().x-_paddle->getContentSize().width/2)+ PADDLEPIX   ) { //if it hits the left PIX pixels of the paddle
                         _angle_multiplier = 1.4;
                         _ball_x_direction = -1;
                     } else if(_ball->getPosition().x > (_paddle->getPosition().x+_paddle->getContentSize().width/2)-PADDLEPIX ){ //if it hits right
@@ -157,7 +159,7 @@ void HelloWorld::update(float dx)
                    CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("paddle.wav"); 
         }
 
-        if( !_savior->isVisible()  && (_ball->getPosition().y-_ball->getContentSize().height/2) <= 0){ //bottom edge
+        if( !_savior->isVisible()  && (_ball->getPosition().y-_ball->getContentSize().height/2) <= -70){ //off bottom edge
             //_ball_y_direction = 1;
             //_speed_index = 0;
             //_ball_speed = _speeds[_speed_index]; //Reset ball speed
@@ -450,7 +452,7 @@ bool HelloWorld::init()
         static int padding= (winSize.width-((brick->getContentSize().width)*6))/7;
 
         int xOffset = padding+brick->getContentSize().width/2+((brick->getContentSize().width+padding)*i);
-        brick->setPosition(ccp(xOffset, winSize.height - brick->getContentSize().height * 2.5)); //set row in relation to the top of the screen and the size of the _bricks
+        brick->setPosition(ccp(xOffset, winSize.height - brick->getContentSize().height * 5.5)); //2.5 set row in relation to the top of the screen and the size of the _bricks
         this->addChild(brick); //Add to screen
         _bricks->addObject(brick); //Add to brick array
         _total_bricks++;
