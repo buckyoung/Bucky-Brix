@@ -452,7 +452,7 @@ bool HelloWorld::init()
         static int padding= (winSize.width-((brick->getContentSize().width)*6))/7;
 
         int xOffset = padding+brick->getContentSize().width/2+((brick->getContentSize().width+padding)*i);
-        brick->setPosition(ccp(xOffset, winSize.height - brick->getContentSize().height * 5.5)); //2.5 set row in relation to the top of the screen and the size of the _bricks
+        brick->setPosition(ccp(xOffset, winSize.height - brick->getContentSize().height * 2.5)); //2.5 set row in relation to the top of the screen and the size of the _bricks
         this->addChild(brick); //Add to screen
         _bricks->addObject(brick); //Add to brick array
         _total_bricks++;
