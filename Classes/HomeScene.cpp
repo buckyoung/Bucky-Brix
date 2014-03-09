@@ -85,7 +85,7 @@ bool Home::init()
 
          //Init music
     if(! CocosDenshion::SimpleAudioEngine::sharedEngine()->isBackgroundMusicPlaying () ){
-        CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic("background.wav", true);
+        CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic("background.mp3", true);
         CocosDenshion::SimpleAudioEngine::sharedEngine()->setBackgroundMusicVolume(0.8);
         CocosDenshion::SimpleAudioEngine::sharedEngine()->setEffectsVolume(1.0);
     }

@@ -2,15 +2,13 @@
 #include "SimpleAudioEngine.h"
 #include "HomeScene.h"
 
-//TODO:     2)Other Scenes     then3)Particles 
-
 #define SPEED1 2
 #define SPEED2 5
 #define SPEED3 7
 #define SPEED4 9
 #define SETY 70.0
 #define SAVIOR_AMOUNT 500 //not used anymore -- savior now divides score by 2
-#define PADDLEPIX 38 //number of pixels that the angled part of the paddle is
+#define PADDLEPIX 30 //number of pixels that the angled part of the paddle is
 
 using namespace cocos2d;
 using namespace CocosDenshion;
@@ -104,7 +102,7 @@ void HelloWorld::update(float dx)
 
         if (_ball->boundingBox().intersectsRect(_paddle->boundingBox() ) ){ //COLLISION: ball/paddle
 
-                if(_ball->boundingBox().getMinY() < _paddle->boundingBox().getMaxY() - SPEED4*1.5 ){ //hit side of paddle -- give some lee-way
+                if(_ball->boundingBox().getMinY() < _paddle->boundingBox().getMaxY()/2){ //hit side of paddle -- give some lee-way
                     //do nothing
                 } else { //Hit top of paddle
 
@@ -215,6 +213,22 @@ void HelloWorld::update(float dx)
         _score_label->setColor(ccc3(0,0,0)); //black
 
 
+        CCUserDefault::sharedUserDefault()->flush ();  //flush before every get
+        int highscore = CCUserDefault::sharedUserDefault()->getIntegerForKey("hiscore", -1); //-1 is default val if not exist
+        
+        if(highscore < _score){
+            CCUserDefault::sharedUserDefault()->setIntegerForKey("hiscore", _score); 
+            highscore = _score;
+        }
+
+        char string[20] = { 0 };
+        sprintf(string, "High Score: %d", highscore);
+
+        CCLabelTTF *hiscore = CCLabelTTF::create(string, "Silom.ttf", 50, CCSizeMake(winSize.width, 150), kCCTextAlignmentCenter);
+        hiscore->setAnchorPoint(ccp(0.5f,0.5f)); 
+        hiscore->setPosition(ccp(winSize.width/2, winSize.height/2 - 100));
+        hiscore->setColor(ccc3(80,80,80)); //Grey
+        this->addChild(hiscore, 4);
 
             CCMenuItem *new_game = CCMenuItemImage::create(
                                         "newgame.png",
