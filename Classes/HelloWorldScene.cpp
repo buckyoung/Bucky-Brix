@@ -2,6 +2,8 @@
 #include "SimpleAudioEngine.h"
 #include "HomeScene.h"
 
+//theoretically, 4360 is the highest possible score
+
 #define SPEED1 2
 #define SPEED2 5
 #define SPEED3 7
