@@ -90,7 +90,7 @@ void HelloWorld::update(float dx)
                     _ball_x_direction = -1;
                 } else if (_ball->boundingBox().getMinX() > ((CCSprite *)brick)->boundingBox().getMaxX()-SPEED4){ //hit right side of brick
                     _ball_x_direction = 1;
-                } else if(_ball->boundingBox().getMinY() > ((CCSprite *)brick)->boundingBox().getMaxY()-SPEED4 ) {
+                } else if(_ball->boundingBox().getMinY() > ((CCSprite *)brick)->boundingBox().getMaxY()-SPEED4*1.5 ) {
                     _ball_y_direction = 1; //BOUNCE UP OFF TOP OF BLOcK!
                 } else {
                     _ball_y_direction = -1;
